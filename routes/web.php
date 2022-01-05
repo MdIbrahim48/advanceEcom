@@ -73,6 +73,13 @@ Route::group(['prefix'=>'admin','middleware'=>['auth','admin'],'namespace'=>'Adm
     Route::get('/sub-subcategory/ajax/{subcatId}',[ProductController::class,'getSubSubCat']);
     Route::post('/store-product',[ProductController::class,'storeProduct'])->name('store-product');
     Route::get('/all-product',[ProductController::class,'index'])->name('manage-product');
+    Route::get('/edit-product/{id}',[ProductController::class,'editProduct'])->name('product-edit');
+    Route::post('/update-product/{id}',[ProductController::class,'updateProduct'])->name('product-update');
+    Route::get('/delete-product/{id}',[ProductController::class,'deleteProduct'])->name('product-delete');
+
+    Route::post('/update/product-thumbnail',[ProductController::class,'updateThumbnail'])->name('update-product-thumbnail');
+    Route::post('/product/multi-image/update',[ProductController::class,'updateMultiImage'])->name('update-product-multiimage');
+    Route::get('/product-multiimg-delete/{id}',[ProductController::class,'deleteMultiImage'])->name('product-multi-img-delete');
 
 
 });
@@ -84,6 +91,7 @@ Route::group(['prefix'=>'user','middleware'=>['auth','user'],'namespace'=>'User'
     Route::get('/image',[UserController::class,'imagePage'])->name('user-image');
     Route::post('/update-image',[UserController::class,'updateImage'])->name('update-image');
     Route::get('/user-password',[UserController::class,'userPassword'])->name('user-password');
+    Route::post('/update-password',[UserController::class,'updatePassword'])->name('update-password');
     Route::post('/update-password',[UserController::class,'updatePassword'])->name('update-password');
 });
 

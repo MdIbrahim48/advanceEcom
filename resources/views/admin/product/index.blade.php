@@ -18,7 +18,7 @@
     <div class="sl-pagebody">
 
       <div class="row row-sm">
-       <div class="col-md-8">
+       <div class="col-md-12">
         <div class="card pd-20 pd-sm-40">
             <div class="card-header">Product List</div>
             <div class="card-body">
@@ -43,8 +43,8 @@
                         <td>{{ $item->product_name_bn }}</td>
                         <td>{{ $item->product_qty }}</td>
                         <td>
-                            <a href="{{ route('category-edit',$item->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
-                            <a href="{{ route('category-delete',$item->id) }}" id="delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
+                            <a href="{{ route('product-edit',$item->id) }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil"></i></a>
+                            <a href="{{ route('product-delete',$item->id) }}" id="delete" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>
                         </td>
                       </tr>
                     @endforeach
