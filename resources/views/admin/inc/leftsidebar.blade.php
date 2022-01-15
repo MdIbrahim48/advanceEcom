@@ -57,6 +57,14 @@
         <li class="nav-item"><a href="{{ route('manage-product') }}" class="nav-link @yield('all-product')">Manage Product</a></li>
       </ul>
 
+
+      <a href="{{ route('sliders') }}" class="sl-menu-link @yield('sliders')">
+        <div class="sl-menu-item">
+          <i class="menu-item-icon icon ion-ios-home-outline tx-22"></i>
+          <span class="menu-item-label">Slider</span>
+        </div><!-- menu-item -->
+      </a><!-- sl-menu-link -->
+
     </div><!-- sl-sideleft-menu -->
 
     <br>

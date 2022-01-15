@@ -16,6 +16,29 @@ use Intervention\Image\Facades\Image;
 
 class ProductController extends Controller
 {
+
+    public function active($id){
+        Product::findOrFail($id)->update([
+            'status' => 0
+        ]);
+        $notification=array(
+            'message' => 'Product InActivated',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
+
+    public function inactive($id){
+        Product::findOrFail($id)->update([
+            'status' => 1
+        ]);
+        $notification=array(
+            'message' => 'Product Activated',
+            'alert-type' => 'success'
+        );
+        return redirect()->back()->with($notification);
+    }
+
     public function addProduct(){
         $categories = Category::latest()->get();
         $brands = Brand::latest()->get();
@@ -231,6 +254,25 @@ class ProductController extends Controller
             'alert-type' => 'success'
         );
         return redirect()->back()->with($notification);
+    }
+// ======= Add MultiImage ========
+    public function addMultiImage(Request $request){
+             // multiple image upload
+             $images = $request->file('photo_name');
+             foreach($images as $image){
+                 $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+                 Image::make($image)->resize(917,1000)->save('uploads/products/multi-img/'.$name_gen);
+                 $uploadPath = 'uploads/products/multi-img/'.$name_gen;
+                 MultiImg::create([
+                     'product_id' => $request->product_id,
+                     'photo_name' => $uploadPath
+                 ]);
+             }
+            $notification=array(
+                 'message' => 'Product Multi Image Added Successfully',
+                 'alert-type' => 'success'
+             );
+             return redirect()->back()->with($notification);
     }
 // ======= Delete MultiImage ========
     public function deleteMultiImage($id){

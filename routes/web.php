@@ -4,8 +4,10 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Frontend\IndexController;
+use App\Http\Controllers\Frontend\LanguageController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -79,7 +81,24 @@ Route::group(['prefix'=>'admin','middleware'=>['auth','admin'],'namespace'=>'Adm
 
     Route::post('/update/product-thumbnail',[ProductController::class,'updateThumbnail'])->name('update-product-thumbnail');
     Route::post('/product/multi-image/update',[ProductController::class,'updateMultiImage'])->name('update-product-multiimage');
+    Route::post('/add-product-multiimage',[ProductController::class,'addMultiImage'])->name('add-product-multiimage');
     Route::get('/product-multiimg-delete/{id}',[ProductController::class,'deleteMultiImage'])->name('product-multi-img-delete');
+    Route::get('/product-active/{id}',[ProductController::class,'active'])->name('product-active');
+    Route::get('/product-inactive/{id}',[ProductController::class,'inactive'])->name('product-inactive');
+
+
+    //  Add Slider
+    Route::get('/all/slider',[SliderController::class,'index'])->name('sliders');
+    Route::post('/slider/store',[SliderController::class,'store'])->name('slider-store');
+    Route::get('/slider/edit/{id}',[SliderController::class,'edit'])->name('slider-edit');
+    Route::post('/slider/update/{id}',[SliderController::class,'update'])->name('update-slider');
+    Route::get('/slider/delete/{id}',[SliderController::class,'delete'])->name('slider-delete');
+
+    Route::get('/slider/active/{id}',[SliderController::class,'active'])->name('slider-active');
+    Route::get('/slider/inactive/{id}',[SliderController::class,'inctive'])->name('slider-inactive');
+
+
+
 
 
 });
@@ -97,4 +116,6 @@ Route::group(['prefix'=>'user','middleware'=>['auth','user'],'namespace'=>'User'
 
 // ========= Frontend Route =============
 Route::get('/',[IndexController::class,'index'])->name('frontend.home');
+Route::get('/english/language',[LanguageController::class,'english'])->name('english.language');
+Route::get('/bangla/language',[LanguageController::class,'bangla'])->name('bangla.language');
 
