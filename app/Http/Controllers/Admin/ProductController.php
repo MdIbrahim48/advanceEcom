@@ -201,6 +201,8 @@ class ProductController extends Controller
 
     // ==========Product ============
     public function deleteProduct($id){
+        $product =  Product::where('id',$id)->first();
+        unlink($product->product_thumbnail);
         $images = MultiImg::where('product_id',$id)->get();
         if(count($images)>0){
             foreach($images as $image){
@@ -213,7 +215,7 @@ class ProductController extends Controller
             }
         }
         MultiImg::where('product_id',$id)->delete();
-        Product::where('id',$id)->delete();
+        $product->delete();
         return back()->with('alert-success','Product Delete Successfully');
     }
 
