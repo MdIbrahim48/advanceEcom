@@ -1,6 +1,15 @@
 @extends('layouts.frontend-master')
 
 @section('content')
+
+@php
+    function bn_price($str){
+        $en = [1,2,3,4,5,6,7,8,9,0];
+        $bn = ['১','২','৩','৪','৫','৬','৭','৮','৯','০'];
+        $str = str_replace($en,$bn,$str);
+        return $str;
+    }
+@endphp
 <!-- ============================================== HEADER : END ============================================== -->
 <div class="body-content outer-top-xs" id="top-banner-and-menu">
 	<div class="container">
@@ -1029,12 +1038,11 @@
 			<!-- ============================================== SCROLL TABS ============================================== -->
 <div id="product-tabs-slider" class="scroll-tabs outer-top-vs wow fadeInUp">
 	<div class="more-info-tab clearfix ">
-	   <h3 class="new-product-title pull-left">New Products</h3>
+	   <h3 class="new-product-title pull-left">@if (session()->get('language') == 'bangla')
+        নতুন পন্যসমূহ @else New Products @endif </h3>
 		<ul class="nav nav-tabs nav-tab-line pull-right" id="new-products-1">
-			<li class="active"><a data-transition-type="backSlide" href="#all" data-toggle="tab">All</a></li>
-            {{-- @foreach ($categories as $catitem)
-                <li><a data-transition-type="backSlide" href="category{{$catitem->id }}" data-toggle="tab">{{ $catitem->category_name_en }}</a></li>
-            @endforeach --}}
+			<li class="active"><a data-transition-type="backSlide" href="#all" data-toggle="tab">@if (session()->get('language') == 'bangla')
+               সকল @else All @endif </a></li>
             @foreach ($categories as $category)
                 <li><a data-transition-type="backSlide" href="#category{{ $category->id }}"
                         data-toggle="tab">
@@ -1043,9 +1051,6 @@
                             {{ $category->category_name_en }} @endif
                     </a></li>
             @endforeach
-			{{-- <li><a data-transition-type="backSlide" href="#smartphone" data-toggle="tab">Clothing</a></li>
-			<li><a data-transition-type="backSlide" href="#laptop" data-toggle="tab">Electronics</a></li>
-			<li><a data-transition-type="backSlide" href="#apple" data-toggle="tab">Shoes</a></li> --}}
 		</ul><!-- /.nav-tabs -->
 	</div>
 	<div class="tab-content outer-top-xs">
@@ -1060,18 +1065,45 @@
                                         <div class="image">
                                             <a href="detail.html"><img  src="{{asset($product->product_thumbnail)}}" alt=""></a>
                                         </div><!-- /.image -->
-
-                                        <div class="tag new"><span>new</span></div>
+                                        @php
+                                            $amount = (int)$product->selling_price - (int)$product->discount_price;
+                                            $discount = ($amount/$product->selling_price) * 100;
+                                        @endphp
+                                        <div class="tag new">
+                                            @if ($product->discount_price == null)
+                                                <span>@if (session()->get('language') == 'bangla') নতুন @else new @endif </span>
+                                            @else
+                                            @if (session()->get('language') == 'bangla')
+                                                {{ bn_price(round($discount)) }}% @else {{ round($discount) }} @endif
+                                            @endif
+                                        </div>
                                     </div><!-- /.product-image -->
                                     <div class="product-info text-left">
-                                        <h3 class="name"><a href="detail.html">{{ $product->product_name_en }}</a></h3>
+                                        <h3 class="name"><a href="detail.html">@if (session()->get('language') == 'bangla')
+                                            {{ $product->product_name_bn }} @else
+                                                {{ $product->product_name_en }} @endif</a></h3>
                                         <div class="rating rateit-small"></div>
                                         <div class="description"></div>
 
                                         <div class="product-price">
-                                            <span class="price">
-                                                $450.99				</span>
-                                            <span class="price-before-discount">$ 800</span>
+                                            @if ($product->discount_price == null)
+                                                @if (session()->get('language') == 'bangla')
+                                                    <span class="price">${{ bn_price($product->selling_price) }}	</span>
+                                                @else
+                                                    <span class="price">${{ $product->selling_price }}	</span>
+                                                @endif
+
+                                            @else
+                                                @if (session()->get('language') == 'bangla')
+                                                    <span class="price">${{ bn_price($product->selling_price) }}	</span>
+                                                    <span class="price-before-discount">${{ bn_price($product->discount_price) }} </span>
+                                                @else
+                                                    <span class="price">${{ $product->selling_price }}	</span>
+                                                    <span class="price-before-discount">${{ $product->discount_price }} </span>
+                                                @endif
+
+                                            @endif
+
                                         </div><!-- /.product-price -->
                                     </div><!-- /.product-info -->
                                     <div class="cart clearfix animate-effect">
@@ -1081,7 +1113,7 @@
                                                     <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Add Cart">
                                                         <i class="fa fa-shopping-cart"></i>
                                                     </button>
-                                                    <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                                    <button class="btn btn-primary cart-btn" type="button"> @if (session()->get('language') == 'bangla') কার্টে সংযুক্ত করুন @else Add to cart @endif </button>
                                                 </li>
                                                 <li class="lnk wishlist">
                                                     <a data-toggle="tooltip" class="add-to-cart" href="detail.html" title="Wishlist">
