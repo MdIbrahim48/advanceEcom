@@ -27,8 +27,8 @@ class CategoryController extends Controller
         Category::insert([
             'category_name_en' => $request->category_name_en,
             'category_name_bn' => $request->category_name_bn,
-            'category_slug_en' => strtolower(str_replace(' ','_',$request->category_slug_en)),
-            'category_slug_bn' => str_replace(' ','_',$request->category_slug_bn),
+            'category_slug_en' => strtolower(str_replace(' ','_',$request->category_name_en)),
+            'category_slug_bn' => str_replace(' ','_',$request->category_name_bn),
             'category_icon' => $request->category_icon,
             'created_at' => Carbon::now(),
         ]);
