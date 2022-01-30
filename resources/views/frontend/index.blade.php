@@ -1,5 +1,6 @@
 @extends('layouts.frontend-master')
 
+@section('frontend_title') Home @endsection
 @section('content')
 
 @php
@@ -1063,7 +1064,11 @@
                                 <div class="product">
                                     <div class="product-image">
                                         <div class="image">
-                                            <a href="detail.html"><img  src="{{asset($product->product_thumbnail)}}" alt=""></a>
+                                            @if (session()->get('language') == 'bangla')
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"><img  src="{{asset($product->product_thumbnail)}}" alt=""></a>
+                                            @else
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"><img  src="{{asset($product->product_thumbnail)}}" alt=""></a>
+                                            @endif
                                         </div><!-- /.image -->
                                         @php
                                             $amount = (int)$product->selling_price - (int)$product->discount_price;
@@ -1074,14 +1079,19 @@
                                                 <span>@if (session()->get('language') == 'bangla') নতুন @else new @endif </span>
                                             @else
                                             @if (session()->get('language') == 'bangla')
-                                                {{ bn_price(round($discount)) }}% @else {{ round($discount) }} @endif
+                                                {{ bn_price(round($discount)) }}% @else {{ round($discount) }}% @endif
                                             @endif
                                         </div>
                                     </div><!-- /.product-image -->
                                     <div class="product-info text-left">
-                                        <h3 class="name"><a href="detail.html">@if (session()->get('language') == 'bangla')
-                                            {{ $product->product_name_bn }} @else
-                                                {{ $product->product_name_en }} @endif</a></h3>
+
+                                        <h3 class="name">
+                                            @if (session()->get('language') == 'bangla')
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"> {{ $product->product_name_bn }}</a>
+                                            @else
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"> {{ $product->product_name_en }}</a>
+                                            @endif
+                                        </h3>
                                         <div class="rating rateit-small"></div>
                                         <div class="description"></div>
 
@@ -1095,11 +1105,11 @@
 
                                             @else
                                                 @if (session()->get('language') == 'bangla')
-                                                    <span class="price">${{ bn_price($product->selling_price) }}	</span>
-                                                    <span class="price-before-discount">${{ bn_price($product->discount_price) }} </span>
+                                                <span class="price">${{ bn_price($product->discount_price) }} </span>
+                                                    <span class="price-before-discount">${{ bn_price($product->selling_price) }}	</span>
                                                 @else
-                                                    <span class="price">${{ $product->selling_price }}	</span>
-                                                    <span class="price-before-discount">${{ $product->discount_price }} </span>
+                                                <span class="price">${{ $product->discount_price }} </span>
+                                                    <span class="price-before-discount">${{ $product->selling_price }}	</span>
                                                 @endif
 
                                             @endif
@@ -1153,20 +1163,55 @@
                                 <div class="product">
                                     <div class="product-image">
                                         <div class="image">
-                                            <a href="detail.html"><img  src="{{asset($product->product_thumbnail)}}" alt=""></a>
+                                            @if (session()->get('language') == 'bangla')
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"><img  src="{{asset($product->product_thumbnail)}}" alt=""></a>
+                                            @else
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"><img  src="{{asset($product->product_thumbnail)}}" alt=""></a>
+                                            @endif
                                         </div><!-- /.image -->
-
-                                        <div class="tag new"><span>new</span></div>
+                                        @php
+                                            $amount = (int)$product->selling_price - (int)$product->discount_price;
+                                            $discount = ($amount/$product->selling_price) * 100;
+                                        @endphp
+                                        <div class="tag new">
+                                            @if ($product->discount_price == null)
+                                                <span>@if (session()->get('language') == 'bangla') নতুন @else new @endif </span>
+                                            @else
+                                            @if (session()->get('language') == 'bangla')
+                                                {{ bn_price(round($discount)) }}% @else {{ round($discount) }}% @endif
+                                            @endif
+                                        </div>
                                     </div><!-- /.product-image -->
                                     <div class="product-info text-left">
-                                        <h3 class="name"><a href="detail.html">{{ $product->product_name_en }}</a></h3>
+                                        <h3 class="name">
+                                            @if (session()->get('language') == 'bangla')
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"> {{ $product->product_name_bn }}</a>
+                                            @else
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"> {{ $product->product_name_en }}</a>
+                                            @endif
+                                        </h3>
                                         <div class="rating rateit-small"></div>
                                         <div class="description"></div>
 
                                         <div class="product-price">
-                                            <span class="price">
-                                                $450.99				</span>
-                                            <span class="price-before-discount">$ 800</span>
+                                            @if ($product->discount_price == null)
+                                                @if (session()->get('language') == 'bangla')
+                                                    <span class="price">${{ bn_price($product->selling_price) }}	</span>
+                                                @else
+                                                    <span class="price">${{ $product->selling_price }}	</span>
+                                                @endif
+
+                                            @else
+                                                @if (session()->get('language') == 'bangla')
+                                                <span class="price">${{ bn_price($product->discount_price) }} </span>
+                                                    <span class="price-before-discount">${{ bn_price($product->selling_price) }}	</span>
+                                                @else
+                                                <span class="price">${{ $product->discount_price }} </span>
+                                                    <span class="price-before-discount">${{ $product->selling_price }}	</span>
+                                                @endif
+
+                                            @endif
+
                                         </div><!-- /.product-price -->
                                     </div><!-- /.product-info -->
                                     <div class="cart clearfix animate-effect">
@@ -1176,7 +1221,7 @@
                                                     <button data-toggle="tooltip" class="btn btn-primary icon" type="button" title="Add Cart">
                                                         <i class="fa fa-shopping-cart"></i>
                                                     </button>
-                                                    <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                                    <button class="btn btn-primary cart-btn" type="button"> @if (session()->get('language') == 'bangla') কার্টে সংযুক্ত করুন @else Add to cart @endif </button>
                                                 </li>
                                                 <li class="lnk wishlist">
                                                     <a data-toggle="tooltip" class="add-to-cart" href="detail.html" title="Wishlist">
@@ -1233,347 +1278,109 @@
 
 <!-- ============================================== WIDE PRODUCTS : END ============================================== -->
 			<!-- ============================================== FEATURED PRODUCTS ============================================== -->
-<section class="section featured-product wow fadeInUp">
-	<h3 class="section-title">Featured products</h3>
-	<div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
+            <section class="section featured-product wow fadeInUp">
+                <h3 class="section-title">Featured products</h3>
+                <div class="owl-carousel home-owl-carousel custom-carousel owl-theme outer-top-xs">
+                    @foreach ($featureds as $featuredProduct)
+                        <div class="item item-carousel">
+                            <div class="products">
+                                <div class="product">
+                                    <div class="product-image">
+                                        <div class="image">
+                                            @if (session()->get('language') == 'bangla')
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"><img  src="{{asset($featuredProduct->product_thumbnail)}}" alt=""></a>
+                                            @else
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"><img  src="{{asset($featuredProduct->product_thumbnail)}}" alt=""></a>
+                                            @endif
+                                        </div>
+                                        <!-- /.image -->
+                                        <div class="tag hot">
+                                            @php
+                                                $amount = (int)$featuredProduct->selling_price - (int)$featuredProduct->discount_price;
+                                                $discount = ($amount/$featuredProduct->selling_price) * 100;
+                                            @endphp
+                                            @if ($featuredProduct->discount_price == null)
+                                                <span>@if (session()->get('language') == 'bangla') নতুন @else new @endif </span>
+                                            @else
+                                                @if (session()->get('language') == 'bangla')
+                                                {{ bn_price(round($discount)) }}% @else {{ round($discount) }}% @endif
+                                            @endif
+                                            {{-- <span>hot</span> --}}
+                                        </div>
+                                    </div>
+                                    <!-- /.product-image -->
+                                    <div class="product-info text-left">
+                                        <h3 class="name">
+                                            @if (session()->get('language') == 'bangla')
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"> {{ $featuredProduct->product_name_bn }}</a>
+                                            @else
+                                                <a href="{{ route('product-details',['id'=>$product->id,'slug'=>$product->product_slug_bn]) }}"> {{ $featuredProduct->product_name_en }}</a>
+                                            @endif
+                                        </h3>
+                                        <div class="rating rateit-small"></div>
+                                        <div class="description"></div>
+
+                                        <div class="product-price">
+                                            @if ($featuredProduct->discount_price == null)
+                                                @if (session()->get('language') == 'bangla')
+                                                    <span class="price">${{ bn_price($featuredProduct->selling_price) }}</span>
+                                                @else
+                                                    <span class="price">${{ $featuredProduct->selling_price }}</span>
+                                                @endif
+
+                                            @else
+                                                @if (session()->get('language') == 'bangla')
+                                                <span class="price">${{ bn_price($featuredProduct->discount_price) }} </span>
+                                                    <span class="price-before-discount">${{ bn_price($featuredProduct->selling_price) }}</span>
+                                                @else
+                                                <span class="price">${{ $featuredProduct->discount_price }} </span>
+                                                    <span class="price-before-discount">${{ $featuredProduct->selling_price }}	</span>
+                                                @endif
+
+                                            @endif
+                                        </div>
+                                        <!-- /.product-price -->
+                                    </div>
+                                    <!-- /.product-info -->
+                                    <div class="cart clearfix animate-effect">
+                                        <div class="action">
+                                            <ul class="list-unstyled">
+                                                <li class="add-cart-button btn-group">
+                                                    <button class="btn btn-primary icon" data-toggle="dropdown" type="button">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                    </button>
+                                                    <button class="btn btn-primary cart-btn" type="button">Add to cart</button>
+                                                </li>
+
+                                                <li class="lnk wishlist">
+                                                    <a class="add-to-cart" href="detail.html" title="Wishlist">
+                                                        <i class="icon fa fa-heart"></i>
+                                                    </a>
+                                                </li>
+
+                                                <li class="lnk">
+                                                    <a class="add-to-cart" href="detail.html" title="Compare">
+                                                        <i class="fa fa-signal" aria-hidden="true"></i>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <!-- /.action -->
+                                    </div>
+                                    <!-- /.cart -->
+                                </div>
+                                <!-- /.product -->
+                            </div>
+                            <!-- /.products -->
+                        </div>
+                    <!-- /.item -->
+                    @endforeach
+
+                </div>
+                <!-- /.home-owl-carousel -->
+            </section>
+            <!-- /.section -->
 
-		<div class="item item-carousel">
-			<div class="products">
-
-	<div class="product">
-		<div class="product-image">
-			<div class="image">
-				<a href="detail.html"><img  src="{{asset('frontend')}}/assets/images/products/p5.jpg" alt=""></a>
-			</div><!-- /.image -->
-
-			                        <div class="tag hot"><span>hot</span></div>
-		</div><!-- /.product-image -->
-
-
-		<div class="product-info text-left">
-			<h3 class="name"><a href="detail.html">Floral Print Buttoned</a></h3>
-			<div class="rating rateit-small"></div>
-			<div class="description"></div>
-
-			<div class="product-price">
-				<span class="price">
-					$450.99				</span>
-										     <span class="price-before-discount">$ 800</span>
-
-			</div><!-- /.product-price -->
-
-		</div><!-- /.product-info -->
-					<div class="cart clearfix animate-effect">
-				<div class="action">
-					<ul class="list-unstyled">
-						<li class="add-cart-button btn-group">
-							<button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-								<i class="fa fa-shopping-cart"></i>
-							</button>
-							<button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-
-						</li>
-
-		                <li class="lnk wishlist">
-							<a class="add-to-cart" href="detail.html" title="Wishlist">
-								 <i class="icon fa fa-heart"></i>
-							</a>
-						</li>
-
-						<li class="lnk">
-							<a class="add-to-cart" href="detail.html" title="Compare">
-							    <i class="fa fa-signal" aria-hidden="true"></i>
-							</a>
-						</li>
-					</ul>
-				</div><!-- /.action -->
-			</div><!-- /.cart -->
-			</div><!-- /.product -->
-
-			</div><!-- /.products -->
-		</div><!-- /.item -->
-
-		<div class="item item-carousel">
-			<div class="products">
-
-	<div class="product">
-		<div class="product-image">
-			<div class="image">
-				<a href="detail.html"><img  src="{{asset('frontend')}}/assets/images/products/p6.jpg" alt=""></a>
-			</div><!-- /.image -->
-
-			<div class="tag new"><span>new</span></div>
-		</div><!-- /.product-image -->
-
-
-		<div class="product-info text-left">
-			<h3 class="name"><a href="detail.html">Floral Print Buttoned</a></h3>
-			<div class="rating rateit-small"></div>
-			<div class="description"></div>
-
-			<div class="product-price">
-				<span class="price">
-					$450.99				</span>
-										     <span class="price-before-discount">$ 800</span>
-
-			</div><!-- /.product-price -->
-
-		</div><!-- /.product-info -->
-					<div class="cart clearfix animate-effect">
-				<div class="action">
-					<ul class="list-unstyled">
-						<li class="add-cart-button btn-group">
-							<button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-								<i class="fa fa-shopping-cart"></i>
-							</button>
-							<button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-
-						</li>
-
-		                <li class="lnk wishlist">
-							<a class="add-to-cart" href="detail.html" title="Wishlist">
-								 <i class="icon fa fa-heart"></i>
-							</a>
-						</li>
-
-						<li class="lnk">
-							<a class="add-to-cart" href="detail.html" title="Compare">
-							    <i class="fa fa-signal" aria-hidden="true"></i>
-							</a>
-						</li>
-					</ul>
-				</div><!-- /.action -->
-			</div><!-- /.cart -->
-			</div><!-- /.product -->
-
-			</div><!-- /.products -->
-		</div><!-- /.item -->
-
-		<div class="item item-carousel">
-			<div class="products">
-
-	<div class="product">
-		<div class="product-image">
-			<div class="image">
-				<a href="detail.html"><img  src="{{asset('frontend')}}/assets/images/blank.gif" data-echo="assets/images/products/p7.jpg" alt=""></a>
-			</div><!-- /.image -->
-
-			            <div class="tag sale"><span>sale</span></div>
-		</div><!-- /.product-image -->
-
-
-		<div class="product-info text-left">
-			<h3 class="name"><a href="detail.html">Floral Print Buttoned</a></h3>
-			<div class="rating rateit-small"></div>
-			<div class="description"></div>
-
-			<div class="product-price">
-				<span class="price">
-					$450.99				</span>
-										     <span class="price-before-discount">$ 800</span>
-
-			</div><!-- /.product-price -->
-
-		</div><!-- /.product-info -->
-					<div class="cart clearfix animate-effect">
-				<div class="action">
-					<ul class="list-unstyled">
-						<li class="add-cart-button btn-group">
-							<button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-								<i class="fa fa-shopping-cart"></i>
-							</button>
-							<button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-
-						</li>
-
-		                <li class="lnk wishlist">
-							<a class="add-to-cart" href="detail.html" title="Wishlist">
-								 <i class="icon fa fa-heart"></i>
-							</a>
-						</li>
-
-						<li class="lnk">
-							<a class="add-to-cart" href="detail.html" title="Compare">
-							    <i class="fa fa-signal" aria-hidden="true"></i>
-							</a>
-						</li>
-					</ul>
-				</div><!-- /.action -->
-			</div><!-- /.cart -->
-			</div><!-- /.product -->
-
-			</div><!-- /.products -->
-		</div><!-- /.item -->
-
-		<div class="item item-carousel">
-			<div class="products">
-
-	<div class="product">
-		<div class="product-image">
-			<div class="image">
-				<a href="detail.html"><img  src="{{asset('frontend')}}/assets/images/products/p8.jpg" alt=""></a>
-			</div><!-- /.image -->
-
-			                        <div class="tag hot"><span>hot</span></div>
-		</div><!-- /.product-image -->
-
-
-		<div class="product-info text-left">
-			<h3 class="name"><a href="detail.html">Floral Print Buttoned</a></h3>
-			<div class="rating rateit-small"></div>
-			<div class="description"></div>
-
-			<div class="product-price">
-				<span class="price">
-					$450.99				</span>
-										     <span class="price-before-discount">$ 800</span>
-
-			</div><!-- /.product-price -->
-
-		</div><!-- /.product-info -->
-					<div class="cart clearfix animate-effect">
-				<div class="action">
-					<ul class="list-unstyled">
-						<li class="add-cart-button btn-group">
-							<button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-								<i class="fa fa-shopping-cart"></i>
-							</button>
-							<button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-
-						</li>
-
-		                <li class="lnk wishlist">
-							<a class="add-to-cart" href="detail.html" title="Wishlist">
-								 <i class="icon fa fa-heart"></i>
-							</a>
-						</li>
-
-						<li class="lnk">
-							<a class="add-to-cart" href="detail.html" title="Compare">
-							    <i class="fa fa-signal" aria-hidden="true"></i>
-							</a>
-						</li>
-					</ul>
-				</div><!-- /.action -->
-			</div><!-- /.cart -->
-			</div><!-- /.product -->
-
-			</div><!-- /.products -->
-		</div><!-- /.item -->
-
-		<div class="item item-carousel">
-			<div class="products">
-
-	<div class="product">
-		<div class="product-image">
-			<div class="image">
-				<a href="detail.html"><img  src="{{asset('frontend')}}/assets/images/products/p9.jpg" alt=""></a>
-			</div><!-- /.image -->
-
-			<div class="tag new"><span>new</span></div>
-		</div><!-- /.product-image -->
-
-
-		<div class="product-info text-left">
-			<h3 class="name"><a href="detail.html">Floral Print Buttoned</a></h3>
-			<div class="rating rateit-small"></div>
-			<div class="description"></div>
-
-			<div class="product-price">
-				<span class="price">
-					$450.99				</span>
-										     <span class="price-before-discount">$ 800</span>
-
-			</div><!-- /.product-price -->
-
-		</div><!-- /.product-info -->
-					<div class="cart clearfix animate-effect">
-				<div class="action">
-					<ul class="list-unstyled">
-						<li class="add-cart-button btn-group">
-							<button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-								<i class="fa fa-shopping-cart"></i>
-							</button>
-							<button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-
-						</li>
-
-		                <li class="lnk wishlist">
-							<a class="add-to-cart" href="detail.html" title="Wishlist">
-								 <i class="icon fa fa-heart"></i>
-							</a>
-						</li>
-
-						<li class="lnk">
-							<a class="add-to-cart" href="detail.html" title="Compare">
-							    <i class="fa fa-signal" aria-hidden="true"></i>
-							</a>
-						</li>
-					</ul>
-				</div><!-- /.action -->
-			</div><!-- /.cart -->
-			</div><!-- /.product -->
-
-			</div><!-- /.products -->
-		</div><!-- /.item -->
-
-		<div class="item item-carousel">
-			<div class="products">
-
-	<div class="product">
-		<div class="product-image">
-			<div class="image">
-				<a href="detail.html"><img  src="{{asset('frontend')}}/assets/images/products/p10.jpg" alt=""></a>
-			</div><!-- /.image -->
-
-			            <div class="tag sale"><span>sale</span></div>
-		</div><!-- /.product-image -->
-
-
-		<div class="product-info text-left">
-			<h3 class="name"><a href="detail.html">Floral Print Buttoned</a></h3>
-			<div class="rating rateit-small"></div>
-			<div class="description"></div>
-
-			<div class="product-price">
-				<span class="price">
-					$450.99				</span>
-										     <span class="price-before-discount">$ 800</span>
-
-			</div><!-- /.product-price -->
-
-		</div><!-- /.product-info -->
-					<div class="cart clearfix animate-effect">
-				<div class="action">
-					<ul class="list-unstyled">
-						<li class="add-cart-button btn-group">
-							<button class="btn btn-primary icon" data-toggle="dropdown" type="button">
-								<i class="fa fa-shopping-cart"></i>
-							</button>
-							<button class="btn btn-primary cart-btn" type="button">Add to cart</button>
-
-						</li>
-
-		                <li class="lnk wishlist">
-							<a class="add-to-cart" href="detail.html" title="Wishlist">
-								 <i class="icon fa fa-heart"></i>
-							</a>
-						</li>
-
-						<li class="lnk">
-							<a class="add-to-cart" href="detail.html" title="Compare">
-							    <i class="fa fa-signal" aria-hidden="true"></i>
-							</a>
-						</li>
-					</ul>
-				</div><!-- /.action -->
-			</div><!-- /.cart -->
-			</div><!-- /.product -->
-
-			</div><!-- /.products -->
-		</div><!-- /.item -->
-			</div><!-- /.home-owl-carousel -->
-</section><!-- /.section -->
 <!-- ============================================== FEATURED PRODUCTS : END ============================================== -->
 			<!-- ============================================== WIDE PRODUCTS ============================================== -->
 <div class="wide-banners wow fadeInUp outer-bottom-xs">

@@ -11,7 +11,7 @@
 	    <meta name="keywords" content="MediaCenter, Template, eCommerce">
 	    <meta name="robots" content="all">
 
-	    <title>Flipmart premium HTML5 & CSS3 Template</title>
+	    <title>@yield('frontend_title')</title>
 
 	    <!-- Bootstrap Core CSS -->
 	    <link rel="stylesheet" href="{{ asset('frontend') }}/assets/css/bootstrap.min.css">
@@ -240,9 +240,9 @@
             @foreach ($categories as $category)
                 <li class="dropdown yamm mega-menu">
                     @if (session()->get('language') == 'bangla')
-                    <a href="home.html" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">{{ $category->category_name_bn }}</a>
+                        <a href="{{ url('/') }}" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">{{ $category->category_name_bn }}</a>
                     @else
-                    <a href="home.html" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">{{ $category->category_name_en }}</a>
+                        <a href="{{ url('/') }}" data-hover="dropdown" class="dropdown-toggle" data-toggle="dropdown">{{ $category->category_name_en }}</a>
                     @endif
                     <ul class="dropdown-menu container">
                         <li>
