@@ -18,7 +18,7 @@ class IndexController extends Controller
         $products = Product::where('status',1)->orderBy('id','desc')->get();
         $featureds = Product::where('featured','1')->where('status',1)->orderBy('id','desc')->get();
         $hot_deals	 = Product::where('hot_deals','1')->where('status',1)->orderBy('id','desc')->get();
-        $speacialOffers = Product::where('speacial_offer','1')->where('status',1)->orderBy('id','desc')->get();
+        $speacialOffers = Product::where('speacial_offer','1')->where('discount_price','!=',null)->where('status',1)->orderBy('id','desc')->get();
         $speacialDeals = Product::where('speacial_deals','1')->where('status',1)->orderBy('id','desc')->get();
 
         $skip_category_1 = Category::skip(1)->first();
@@ -41,12 +41,23 @@ class IndexController extends Controller
         ]);
     }
 
+// productDetails
     public function productDetails($id,$slug){
         $product = Product::where('id',$id)->first();
         $multiImg = MultiImg::where('product_id',$product->id)->get();
         return view('frontend.single_product',[
             'product' => $product,
             'multiImg' => $multiImg,
+        ]);
+    }
+
+    // tagWiseProduct
+    public function tagWiseProduct($tag){
+        $categories = Category::orderBy('category_name_en','ASC')->get();
+        $products = Product::where('product_tags_en',$tag)->orWhere('product_tags_bn',$tag)->where('status',1)->orderBy('id','desc')->get();
+        return view('frontend.tag-wise-product',[
+            'products' => $products,
+            'categories' => $categories,
         ]);
     }
 

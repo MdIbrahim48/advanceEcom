@@ -116,9 +116,13 @@ Route::group(['prefix'=>'user','middleware'=>['auth','user'],'namespace'=>'User'
 
 // ========= Frontend Route =============
 Route::get('/',[IndexController::class,'index'])->name('frontend.home');
+
+// product-details
 Route::get('/product-details/{id}/{slug}',[IndexController::class,'productDetails'])->name('product-details');
 
-
+// language
 Route::get('/english/language',[LanguageController::class,'english'])->name('english.language');
 Route::get('/bangla/language',[LanguageController::class,'bangla'])->name('bangla.language');
 
+// product tag
+Route::get('/product/tag/{tag}',[IndexController::class,'tagWiseProduct'])->name('tagWiseProduct');
