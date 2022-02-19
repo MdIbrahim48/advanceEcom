@@ -126,3 +126,9 @@ Route::get('/bangla/language',[LanguageController::class,'bangla'])->name('bangl
 
 // product tag
 Route::get('/product/tag/{tag}',[IndexController::class,'tagWiseProduct'])->name('tagWiseProduct');
+// product tag
+Route::get('/subcategory/product/{id}/{slug}',[IndexController::class,'subCatWiseProduct']);
+
+Route::get('/sub/subcategory/product/{id}/{slug}',[IndexController::class,'subSubCatWiseProduct']);
+
+Route::get('/product/view/modal/{id}',[IndexController::class,'productViewModal']);

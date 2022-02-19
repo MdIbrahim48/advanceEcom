@@ -44,10 +44,32 @@ class IndexController extends Controller
 // productDetails
     public function productDetails($id,$slug){
         $product = Product::where('id',$id)->first();
+
+        $color_en = $product->product_color_en;
+        $product_color_en = explode(',',$color_en);
+
+        $color_bn = $product->product_color_bn;
+        $product_color_bn = explode(',',$color_bn);
+
+        $size_en = $product->product_size_en;
+        $product_size_en = explode(',',$size_en);
+
+        $size_bn = $product->product_size_bn;
+        $product_size_bn = explode(',',$size_bn);
+
+
         $multiImg = MultiImg::where('product_id',$product->id)->get();
+
+        $relatedProducts = Product::where('category_id',$product->category_id)->where('id','!=',$product->id)->orderBy('id','desc')->get();
+
         return view('frontend.single_product',[
             'product' => $product,
             'multiImg' => $multiImg,
+            'product_color_en' => $product_color_en,
+            'product_color_bn' => $product_color_bn,
+            'product_size_en' => $product_size_en,
+            'product_size_bn' => $product_size_bn,
+            'relatedProducts' => $relatedProducts,
         ]);
     }
 
@@ -59,6 +81,43 @@ class IndexController extends Controller
             'products' => $products,
             'categories' => $categories,
         ]);
+    }
+    // subCatWiseProduct
+    public function subCatWiseProduct($id,$slug){
+        $categories = Category::orderBy('category_name_en','ASC')->get();
+        $products = Product::where('status',1)->where('subcategory_id',$id)->orderBy('id','desc')->get();
+        return view('frontend.sub_category_product',[
+            'products' => $products,
+            'categories' => $categories,
+        ]);
+    }
+    // subCatWiseProduct
+    public function subSubCatWiseProduct($id,$slug){
+        $categories = Category::orderBy('category_name_en','ASC')->get();
+        $products = Product::where('status',1)->where('subsubcategory_id',$id)->orderBy('id','desc')->get();
+        return view('frontend.sub_category_product',[
+            'products' => $products,
+            'categories' => $categories,
+        ]);
+    }
+
+
+    // productViewModal
+    public function productViewModal($id){
+        $product = Product::where('id',$id)->first();
+        $color = $product->product_color_en;
+        $product_color = explode(',',$color);
+
+        $size = $product->product_size_en;
+        $product_size = explode(',',$size);
+
+        return response()->json([
+            'product' => $product,
+            'color' => $product_color,
+            'size' => $product_size,
+        ]);
+
+
     }
 
 }

@@ -23,9 +23,9 @@
 
                             <div class="col-sm-12 col-md-3">
                                 @if (session()->get('language') == 'bangla')
-                                <a href=""><h2 class="title">{{ $subcat->subcategory_name_bn }}</h2></a>
+                                <a href="{{ url('subcategory/product/'.$subcat->id.'/'.$subcat->subcategory_slug_bn) }}"><h2 class="title">{{ $subcat->subcategory_name_bn }}</h2></a>
                             @else
-                                <a href=""><h2 class="title">{{ $subcat->subcategory_name_en }}</h2></a>
+                                <a href="{{ url('subcategory/product/'.$subcat->id.'/'.$subcat->subcategory_slug_en) }}"><h2 class="title">{{ $subcat->subcategory_name_en }}</h2></a>
                             @endif
                                 <ul class="links list-unstyled">
                                     @php
@@ -33,9 +33,9 @@
                                     @endphp
                                      @foreach ($subsubcategories as $item)
                                      @if (session()->get('language') == 'bangla')
-                                         <li><a href="#">{{ $item->subsubcategory_name_bn }}</a></li>
+                                         <li><a href="{{ url('sub/subcategory/product/'.$item->id.'/'.$item->subsubcategory_slug_bn) }}">{{ $item->subsubcategory_name_bn }}</a></li>
                                      @else
-                                         <li><a href="#">{{ $item->subsubcategory_name_en }}</a></li>
+                                         <li><a href="{{ url('sub/subcategory/product/'.$item->id.'/'.$item->subsubcategory_slug_en) }}">{{ $item->subsubcategory_name_en }}</a></li>
                                      @endif
                                     @endforeach
 
